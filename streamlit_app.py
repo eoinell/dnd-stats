@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+from numpy.random import randint
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 st.header('Dungeons and Dragons stats')
@@ -79,9 +80,9 @@ with cols[1]:
     for _ in range(12):
         st.write(' ')
     st.metric('%',  round(100 * (probs * (x >= DC)).sum(), 2))
-#TODO add a roller
+
 cols = st.columns(3)
-from numpy.random import randint
+
 def rolled():
     val = randint(1, side) + sum([randint(1, s) for s in additional_sides])
     with cols[1]:
