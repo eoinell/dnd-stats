@@ -39,9 +39,9 @@ for col, _ in zip(more_dice_cols[1:], range(number_more_dice)):
 
 side = dice[main_die]
 additional_sides = [dice[label] for label in additional_dice]
-mins = [1,] + [a * s if s < 0 else 1 for a, s in zip(additional_sides, dice_signs)]
-maxs = [side,] + [a if s > 0 else s for a, s in zip(additional_sides, dice_signs)]
-roll_range = np.arange(sum(mins), sum(maxs) + 1)
+_min = sum([1,] + [a * s if s < 0 else 1 for a, s in zip(additional_sides, dice_signs)])
+_max = sum([side,] + [a if s > 0 else s for a, s in zip(additional_sides, dice_signs)])
+roll_range = np.arange(_min, _max)
 # additional dice subtracted changes the roll_range, but not the shape of the PDF (probability distribution function)
 DC = st.slider('Difficulty Class', value=roll_range[len(roll_range)//2], step=1, min_value=int(_min+modifier), max_value=int(_max+modifier), )
 
