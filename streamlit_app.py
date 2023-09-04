@@ -4,7 +4,7 @@ from numpy.random import randint
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 st.header('Dungeons and Dragons Stats')
-
+ 
 # different sided dice in DnD
 sides = (4, 6, 8, 10, 12, 20)
 dice = {'D'+ str(n) : n for n in sides} # D20 = 20 sided dice
