@@ -1,2 +1,2 @@
 # dnd-stats
-https://eoinell-dnd-stats-streamlit-app-fmkyts.streamlit.app/
+https://dnd-stats.streamlit.app/
