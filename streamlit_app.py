@@ -87,9 +87,10 @@ with cols[1]:
 cols = st.columns(3)
 
 def rolled():
-    val = randint(1, side) + sum([sign* randint(1, s) for s, sign in zip(additional_sides, dice_signs)]) + modifier
+    vals = [randint(1, side),  sign* randint(1, s) for s, sign in zip(additional_sides, dice_signs), modifier]
+    val = sum(vals)
     with cols[1]:
-        st.subheader(f'{val}')
+        st.subheader(f"{'+'.join(vals}" = {val})
     with cols[2]:
         if val >= DC:
             st.markdown('<p style="font-family:Courier; color:Green; font-size: 20px;">Success ◉‿◉</p>', unsafe_allow_html=True)
