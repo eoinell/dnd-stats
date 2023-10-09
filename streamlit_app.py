@@ -87,7 +87,7 @@ with cols[1]:
 cols = st.columns(3)
 
 def rolled():
-    val = randint(1, side) + sum([sign* randint(1, s) for s, sign in zip(additional_sides, dice_signs)])
+    val = randint(1, side) + sum([sign* randint(1, s) for s, sign in zip(additional_sides, dice_signs)]) + modifier
     with cols[1]:
         st.subheader(f'{val}')
     with cols[2]:
