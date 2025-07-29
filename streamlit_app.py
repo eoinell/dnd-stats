@@ -9,7 +9,7 @@ st.header('Dungeons and Dragons Stats')
 sides = (4, 6, 8, 10, 12, 20)
 dice = {'D'+ str(n) : n for n in sides} # D20 = 20 sided dice
 
-cols = st.columns([10, 10, 7]) # layout stuff
+cols = st.columns([10, 10, 7, 7]) # layout stuff
 with cols[0]:
     main_die = st.selectbox('Main Die', dice, index=5)
 with cols[1]:
@@ -19,7 +19,9 @@ with cols[2]:
     # static bonus applied to the roll
     modifier = int(st.number_input('Modifier', value=0, step=1, ))
 
-
+with cols[3]:
+  halfling_luck = st.checkbox('Halfling Luck', value=False)
+    
 # a bonus die can be added to some rolls, e.g. inspiration or guidance.
 # sometimes its subtracted e.g. bane
 additional_dice = []
@@ -33,9 +35,7 @@ for col, _ in zip(more_dice_cols[1:], range(number_more_dice)):
             dice_signs.append((1,-1)[st.checkbox('subtract', key=len(additional_dice))])
 
 
-
 # target for the roll to be a 'success'
-
 
 side = dice[main_die]
 additional_sides = [dice[label] for label in additional_dice]
@@ -45,12 +45,18 @@ roll_range = np.arange(_min, _max + 1)
 # additional dice subtracted changes the roll_range, but not the shape of the PDF (probability distribution function)
 DC = st.slider('Difficulty Class', value=int(roll_range[len(roll_range)//2]), step=1, min_value=int(_min+modifier), max_value=int(_max+modifier), )
 
+probs = np.ones(side) # all numbers equally probable if no advantage
+if halfling_luck:
+    probs[0] = 0
+    
 if advantage == 'Advantage':
-    probs = np.array([2*(val - 1) + 1 for val in np.arange(1, side + 1)]) # base distribution
+    probs = np.convolve(np.array([2*(val - 1) + 1 for val in np.arange(1, side + 1)]), probs) # base distribution
+    
 elif advantage == 'Disadvantage':
-    probs = np.array([2*(side - val) + 1 for val in np.arange(1, side + 1)])
-else:
-    probs = np.ones(side) # all numbers equally probable if no advantage
+    probs = np.convolve(np.array([2*(side - val) + 1 for val in np.arange(1, side + 1)]), probs)
+
+if halfling_luck:
+    probs[0] = 0
 
 for a_side in additional_sides:
     probs = np.convolve(probs, np.ones(a_side),) # convolve the PDFs
